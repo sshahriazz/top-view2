@@ -10,10 +10,18 @@
     "prisma-wohoo": "npx prisma migrate dev && npx prisma generate && npx prisma format"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.5",
+    "@prisma/client": "^4.5.0",
+    "@sinclair/typebox": "^0.24.51",
+    "immer": "^9.0.16",
+    "jotai": "^1.8.6",
+    "nanoid": "^4.0.0",
     "next": "12.3.1",
+    "next-auth": "^4.15.0",
     "prisma": "^4.5.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "stitches-system": "^1.0.2-a"
   },
   "devDependencies": {
     "@types/node": "18.11.5",
