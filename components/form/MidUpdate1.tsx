@@ -9,10 +9,11 @@ import TaskList from "components/form/TaskList";
 import TextInput from "components/input/Input";
 import TextAreaInput from "components/input/TextAreaInput";
 import { useAtom } from "jotai";
+import { nanoid } from "nanoid";
 import React, { ChangeEvent, useEffect } from "react";
 import { Text, YStack } from "stitches-system";
 
-const MidUpdate = () => {
+const MidUpdate1 = () => {
   const [midUpdate, setMidUpdate] = useAtom(midUpdate1Atom);
   const [taskList] = useAtom(taskList1Atom);
   const [screenShots] = useAtom(screenShots1Atom);
@@ -55,7 +56,7 @@ const MidUpdate = () => {
           typeof value === "string" &&
           (key !== "additionalInfo" ? (
             <TextInput
-              key={key}
+              key={nanoid()}
               type={key === "time" ? "time" : "text"}
               label={key}
               value={value as string}
@@ -64,6 +65,7 @@ const MidUpdate = () => {
             />
           ) : (
             <TextAreaInput
+              key={nanoid()}
               label="Additional Info"
               value={value as string}
               onChange={handleMidUpdate}
@@ -79,4 +81,4 @@ const MidUpdate = () => {
   );
 };
 
-export default MidUpdate;
+export default MidUpdate1;

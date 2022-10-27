@@ -3,6 +3,7 @@ import { taskList1Atom } from "atom";
 import TextInput from "components/input/Input";
 import { StyledButton } from "components/primitives/button.styles";
 import { useAtom } from "jotai";
+import { nanoid } from "nanoid";
 import React, { ChangeEvent } from "react";
 import { taskListSchema } from "schema/planSchema";
 import { XStack, YStack } from "stitches-system";
@@ -22,7 +23,7 @@ const TaskList = ({ taskListAtom }: { taskListAtom: typeof taskList1Atom }) => {
     <YStack>
       {taskList.map((item, index) => (
         <TextInput
-          key={index}
+          key={nanoid()}
           actionComponent={
             <XStack>
               <StyledButton

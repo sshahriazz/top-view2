@@ -3,6 +3,7 @@ import TaskList from "components/form/TaskList";
 import TextInput from "components/input/Input";
 import TextAreaInput from "components/input/TextAreaInput";
 import { useAtom } from "jotai";
+import { nanoid } from "nanoid";
 import React, { ChangeEvent, useEffect } from "react";
 import { Text, YStack } from "stitches-system";
 
@@ -43,7 +44,7 @@ const Plan = () => {
           typeof value === "string" &&
           (key !== "additionalInfo" ? (
             <TextInput
-              key={key}
+              key={nanoid()}
               type={key === "time" ? "time" : "text"}
               label={key}
               value={value as string}
@@ -52,6 +53,7 @@ const Plan = () => {
             />
           ) : (
             <TextAreaInput
+              key={nanoid()}
               label="Additional Info"
               value={value as string}
               onChange={handleMidUpdate}

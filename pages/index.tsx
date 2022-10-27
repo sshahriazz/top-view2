@@ -8,10 +8,10 @@ import FinalUpdate from "components/form/FinalUpdate";
 import TaskInfo from "components/form/TaskInfo";
 import { useAtom } from "jotai";
 import { dailyPlanAtom } from "atom";
+import { nanoid } from "nanoid";
 
 const Home: NextPage = () => {
   const [data] = useAtom(dailyPlanAtom);
-  console.log(data);
 
   return (
     <YStack>
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
           <Text>{data.plan.additionalInfo} </Text>
 
           {data.plan.TaskList.map((item) => (
-            <Text key={item.task}>{item.task}</Text>
+            <Text key={nanoid()}>{item.task}</Text>
           ))}
         </YStack>
       </XStack>

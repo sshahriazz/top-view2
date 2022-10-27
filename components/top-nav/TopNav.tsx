@@ -1,3 +1,4 @@
+import { StyledButton } from "components/primitives/button.styles";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import { Text, XStack } from "stitches-system";
@@ -12,9 +13,16 @@ const TopNav = () => {
       css={{ mx: "$3", mt: "$2", p: "$3", border: "1px solid $primary" }}
     >
       <Text>LOGO</Text>
-      <XStack>
-        {!session && <button onClick={() => signIn()}>Login</button>}
-        {session && <button onClick={() => signOut()}>Logout</button>}
+      <XStack space={"$space$4"}>
+        <Text>{session?.user?.name}</Text>
+        <XStack>
+          {!session && (
+            <StyledButton onClick={() => signIn()}>Login</StyledButton>
+          )}
+          {session && (
+            <StyledButton onClick={() => signOut()}>Logout</StyledButton>
+          )}
+        </XStack>
       </XStack>
     </XStack>
   );
