@@ -17,7 +17,7 @@ export const StyledTextArea = styled("textarea", {
 export const StyledLabel = styled("label", {});
 const TextInput = ({
   label,
-  type,
+  type = "text",
   name,
   value,
   onChange,
@@ -25,7 +25,7 @@ const TextInput = ({
   label?: string;
   value?: string;
   name?: string;
-  type: "text" | "number" | "date" | "time";
+  type?: "text" | "number" | "date" | "time";
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }) => (
   <XStack css={{ gap: "$4" }}>

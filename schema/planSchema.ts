@@ -1,44 +1,40 @@
 import { Type } from "@sinclair/typebox";
 
-export const dailyPlanSchema = Type.Object({
-  date: Type.String({ default: "date" }),
-  taskName: Type.String({ default: "taskName" }),
-  plan: Type.Object({
-    // time: Type.String(),
-    // additionalInfo: Type.String(),
-    // TaskList: Type.Array(Type.String()),
-    time: Type.String({ default: "time 1" }),
-    additionalInfo: Type.String({ default: "Anything" }),
-    TaskList: Type.Array(Type.String(), {
-      default: ["Task1", "Task2", "Task 3"],
-    }),
-    screenShots: Type.Array(Type.String(), { default: ["hello", "hi"] }),
-    PrLink: Type.String({ default: "P link" }),
-    videoLink: Type.String({ default: "video end" }),
-  }),
-  // midUpdate1: Type.Object({
-  //   time: Type.String(),
-  //   additionalInfo: Type.String(),
-  //   TaskList: Type.Array(Type.String()),
-  //   PrLink: Type.String(),
-  //   screenShots: Type.Array(Type.String()),
-  // }),
-  // midUpdate2: Type.Object({
-  //   time: Type.String(),
-  //   additionalInfo: Type.String(),
-  //   TaskList: Type.Array(Type.String()),
-  //   screenShots: Type.Array(Type.String()),
-  //   PrLink: Type.String(),
-  // }),
-  finalUpdate: Type.Object({
-    time: Type.String({ default: "time 2" }),
-    additionalInfo: Type.String({ default: "Anything" }),
-    TaskList: Type.Array(Type.String(), {
-      default: ["Task1", "Task2", "Task 3"],
-    }),
-    screenShots: Type.Array(Type.String(), { default: ["hello", "hi"] }),
-    PrLink: Type.String({ default: "P link" }),
-    videoLink: Type.String({ default: "video" }),
-  }),
+export const taskListSchema = Type.Array(Type.Object({ task: Type.String() }), {
+  default: [{ task: "Hello" }, { task: "hi" }],
 });
-export type DailyPlanType = typeof dailyPlanSchema;
+export const screenShotsSchema = Type.Array(
+  Type.Object({ image: Type.String() }),
+  {
+    default: [{ image: "Hello" }],
+  }
+);
+
+export const planSchema = Type.Object({
+  time: Type.String(),
+  additionalInfo: Type.String(),
+  TaskList: taskListSchema,
+});
+export const finalUpdateSchema = Type.Object({
+  time: Type.String(),
+  additionalInfo: Type.String(),
+  TaskList: taskListSchema,
+  screenShots: screenShotsSchema,
+  PrLink: Type.String(),
+  videoLink: Type.String(),
+});
+export const midUpdateSchema = Type.Object({
+  time: Type.String(),
+  additionalInfo: Type.String(),
+  TaskList: taskListSchema,
+  PrLink: Type.String(),
+  screenShots: screenShotsSchema,
+});
+export const dailyPlanSchema = Type.Object({
+  date: Type.String(),
+  taskName: Type.String({ default: "task name" }),
+  plan: planSchema,
+  midUpdate1: midUpdateSchema,
+  midUpdate2: midUpdateSchema,
+  finalUpdate: finalUpdateSchema,
+});
