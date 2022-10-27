@@ -1,8 +1,8 @@
 import {
   dailyPlanAtom,
-  midUpdate1Atom,
-  screenShots1Atom,
-  taskList1Atom,
+  finalUpdateAtom,
+  screenShots3Atom,
+  taskList4Atom,
 } from "atom";
 import ScreenShots from "components/form/ScreenShots";
 import TaskList from "components/form/TaskList";
@@ -12,16 +12,16 @@ import { useAtom } from "jotai";
 import React, { ChangeEvent, useEffect } from "react";
 import { Text, YStack } from "stitches-system";
 
-const MidUpdate = () => {
-  const [midUpdate, setMidUpdate] = useAtom(midUpdate1Atom);
-  const [taskList] = useAtom(taskList1Atom);
-  const [screenShots] = useAtom(screenShots1Atom);
+const FinalUpdate = () => {
+  const [finalUpdate, setFinalUpdate] = useAtom(finalUpdateAtom);
+  const [taskList] = useAtom(taskList4Atom);
+  const [screenShots] = useAtom(screenShots3Atom);
   const [, setDailyPlan] = useAtom(dailyPlanAtom);
 
   function handleMidUpdate(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    setMidUpdate((d) => {
+    setFinalUpdate((d) => {
       d[e.target.name as "time" | "additionalInfo" | "PrLink"] = e.target.value;
 
       return d;
@@ -30,27 +30,27 @@ const MidUpdate = () => {
 
   useEffect(() => {
     setDailyPlan((dr) => {
-      dr.midUpdate1 = midUpdate;
+      dr.finalUpdate = finalUpdate;
 
       return dr;
     });
     setDailyPlan((dr) => {
-      dr.midUpdate1.TaskList = taskList;
+      dr.finalUpdate.TaskList = taskList;
 
       return dr;
     });
     setDailyPlan((dr) => {
-      dr.midUpdate1.screenShots = screenShots;
+      dr.finalUpdate.screenShots = screenShots;
 
       return dr;
     });
-  }, [midUpdate, setDailyPlan, taskList, screenShots]);
+  }, [finalUpdate, setDailyPlan, taskList, screenShots]);
 
   return (
     <YStack
       css={{ border: "1px solid $accents7", borderRadius: "$sm", p: "$4" }}
     >
-      {Object.entries(midUpdate).map(
+      {Object.entries(finalUpdate).map(
         ([key, value]) =>
           typeof value === "string" &&
           (key !== "additionalInfo" ? (
@@ -72,11 +72,11 @@ const MidUpdate = () => {
           ))
       )}
       <Text>Tasks</Text>
-      <TaskList taskListAtom={taskList1Atom} />
-      <Text>ScreenShots</Text>
-      <ScreenShots screenShotsAtom={screenShots1Atom} />
+      <TaskList taskListAtom={taskList4Atom} />
+      <Text>Screenshots</Text>
+      <ScreenShots screenShotsAtom={screenShots3Atom} />
     </YStack>
   );
 };
 
-export default MidUpdate;
+export default FinalUpdate;

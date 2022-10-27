@@ -1,25 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Text, YStack } from "stitches-system";
-import { useSession } from "next-auth/react";
-import { useAtom } from "jotai";
-import { dailyPlanAtom } from "atom";
-import TextInput from "components/input/Input";
+import { Text, XStack, YStack } from "stitches-system";
 import MidUpdate1 from "components/form/MidUpdate1";
 import MidUpdate2 from "components/form/MidUpdate2";
-import { ChangeEvent } from "react";
+import Plan from "components/form/Plan";
+import FinalUpdate from "components/form/FinalUpdate";
+import TaskInfo from "components/form/TaskInfo";
+import { useAtom } from "jotai";
+import { dailyPlanAtom } from "atom";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const [dailyPlan, setDailyPlan] = useAtom(dailyPlanAtom);
-
-  function handleNameDate(e: ChangeEvent<HTMLInputElement>) {
-    setDailyPlan((d) => {
-      d[e.target.name as "date" | "taskName"] = e.target.value;
-
-      return d;
-    });
-  }
+  const [data] = useAtom(dailyPlanAtom);
+  console.log(data);
 
   return (
     <YStack>
@@ -28,24 +20,33 @@ const Home: NextPage = () => {
         <meta name="description" content="This is a Progress tracker" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <YStack css={{ maxW: "40%", px: "$5" }} space={"$space$md"}>
-        <Text>Task</Text>
-        <TextInput
-          type="text"
-          value={dailyPlan.taskName}
-          name={"taskName"}
-          onChange={handleNameDate}
-        />
-        <TextInput
-          type="date"
-          value={dailyPlan.date}
-          name={"date"}
-          onChange={handleNameDate}
-        />
+      <XStack>
+        <YStack css={{ w: "40%", px: "$5", mt: "$7" }}>
+          <Text>Task Info</Text>
+          <TaskInfo />
+          <Text>Plan</Text>
+          <Plan />
+          <Text>Update 1</Text>
 
-        <MidUpdate1 />
-        <MidUpdate2 />
-      </YStack>
+          <MidUpdate1 />
+          <Text>Update 2</Text>
+
+          <MidUpdate2 />
+          <Text>Final Update</Text>
+
+          <FinalUpdate />
+        </YStack>
+        <YStack css={{ w: "60%", px: "$5", mt: "$7" }}>
+          <Text>{data.taskName}</Text>
+          <Text>{data.date} </Text>
+          <Text> {data.plan.time} </Text>
+          <Text>{data.plan.additionalInfo} </Text>
+
+          {data.plan.TaskList.map((item) => (
+            <Text key={item.task}>{item.task}</Text>
+          ))}
+        </YStack>
+      </XStack>
     </YStack>
   );
 };

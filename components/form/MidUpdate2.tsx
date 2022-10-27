@@ -1,39 +1,28 @@
-import { Value } from "@sinclair/typebox/value";
 import {
   dailyPlanAtom,
   midUpdate2Atom,
   screenShots2Atom,
   taskList2Atom,
 } from "atom";
+import ScreenShots from "components/form/ScreenShots";
+import TaskList from "components/form/TaskList";
 import TextInput from "components/input/Input";
+import TextAreaInput from "components/input/TextAreaInput";
 import { useAtom } from "jotai";
-import React, { useEffect } from "react";
-import { screenShotsSchema, taskListSchema } from "schema/planSchema";
-import { Text, XStack, YStack } from "stitches-system";
+import React, { ChangeEvent, useEffect } from "react";
+import { Text, YStack } from "stitches-system";
 
 const MidUpdate = () => {
   const [midUpdate, setMidUpdate] = useAtom(midUpdate2Atom);
-  const [taskList, setTaskList] = useAtom(taskList2Atom);
-  const [screenShots, setScreenShots] = useAtom(screenShots2Atom);
+  const [taskList] = useAtom(taskList2Atom);
+  const [screenShots] = useAtom(screenShots2Atom);
   const [, setDailyPlan] = useAtom(dailyPlanAtom);
 
-  function handleMidUpdate(e) {
+  function handleMidUpdate(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     setMidUpdate((d) => {
-      d[e.target.name] = e.target.value;
-
-      return d;
-    });
-  }
-  function handleTask(e, index) {
-    setTaskList((d) => {
-      d[index][e.target.name] = e.target.value;
-
-      return d;
-    });
-  }
-  function handleSS(e, index) {
-    setScreenShots((d) => {
-      d[index][e.target.name] = e.target.value;
+      d[e.target.name as "time" | "additionalInfo" | "PrLink"] = e.target.value;
 
       return d;
     });
@@ -58,77 +47,34 @@ const MidUpdate = () => {
   }, [midUpdate, setDailyPlan, taskList, screenShots]);
 
   return (
-    <YStack space={"$space$md"}>
-      <Text>Mid Update 2</Text>
+    <YStack
+      css={{ border: "1px solid $accents7", borderRadius: "$sm", p: "$4" }}
+    >
       {Object.entries(midUpdate).map(
-        ([key, value], index) =>
-          typeof value === "string" && (
+        ([key, value]) =>
+          typeof value === "string" &&
+          (key !== "additionalInfo" ? (
             <TextInput
-              type={key === "time" ? "time" : "text"}
               key={key}
+              type={key === "time" ? "time" : "text"}
               label={key}
               value={value as string}
               onChange={handleMidUpdate}
               name={key}
             />
-          )
+          ) : (
+            <TextAreaInput
+              label="Additional Info"
+              value={value as string}
+              onChange={handleMidUpdate}
+              name={key}
+            />
+          ))
       )}
-      {taskList.map((item, index) => (
-        <XStack key={index}>
-          <TextInput
-            label={"task"}
-            value={item.task as string}
-            onChange={(e) => handleTask(e, index)}
-            name={"task"}
-          />
-          <button
-            onClick={() =>
-              setTaskList((d) => {
-                d.push(Value.Create(taskListSchema.items));
-              })
-            }
-          >
-            Add
-          </button>
-          <button
-            onClick={() =>
-              setTaskList((d) => {
-                d.splice(index, 1);
-              })
-            }
-          >
-            Remove
-          </button>
-        </XStack>
-      ))}
-      {screenShots.map((item, index) => (
-        <XStack key={index}>
-          <TextInput
-            label={"image"}
-            value={item.image as string}
-            onChange={(e) => handleSS(e, index)}
-            name={"image"}
-          />
-          <button
-            onClick={() =>
-              setScreenShots((d) => {
-                d.push(Value.Create(screenShotsSchema.items));
-              })
-            }
-          >
-            Add
-          </button>
-          <button
-            onClick={() =>
-              setScreenShots((d) => {
-                d.splice(index, 1);
-              })
-            }
-          >
-            Remove
-          </button>
-        </XStack>
-      ))}
+      <Text>Tasks</Text>
+      <TaskList taskListAtom={taskList2Atom} />
+      <Text>Screenshots</Text>
+      <ScreenShots screenShotsAtom={screenShots2Atom} />
     </YStack>
   );
 };

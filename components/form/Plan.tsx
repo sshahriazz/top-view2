@@ -1,10 +1,4 @@
-import {
-  dailyPlanAtom,
-  midUpdate1Atom,
-  screenShots1Atom,
-  taskList1Atom,
-} from "atom";
-import ScreenShots from "components/form/ScreenShots";
+import { dailyPlanAtom, planAtom, taskList3Atom } from "atom";
 import TaskList from "components/form/TaskList";
 import TextInput from "components/input/Input";
 import TextAreaInput from "components/input/TextAreaInput";
@@ -12,17 +6,16 @@ import { useAtom } from "jotai";
 import React, { ChangeEvent, useEffect } from "react";
 import { Text, YStack } from "stitches-system";
 
-const MidUpdate = () => {
-  const [midUpdate, setMidUpdate] = useAtom(midUpdate1Atom);
-  const [taskList] = useAtom(taskList1Atom);
-  const [screenShots] = useAtom(screenShots1Atom);
+const Plan = () => {
+  const [planUpdate, setPlanUpdate] = useAtom(planAtom);
+  const [taskList] = useAtom(taskList3Atom);
   const [, setDailyPlan] = useAtom(dailyPlanAtom);
 
   function handleMidUpdate(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    setMidUpdate((d) => {
-      d[e.target.name as "time" | "additionalInfo" | "PrLink"] = e.target.value;
+    setPlanUpdate((d) => {
+      d[e.target.name as "time" | "additionalInfo"] = e.target.value;
 
       return d;
     });
@@ -30,27 +23,22 @@ const MidUpdate = () => {
 
   useEffect(() => {
     setDailyPlan((dr) => {
-      dr.midUpdate1 = midUpdate;
+      dr.plan = planUpdate;
 
       return dr;
     });
     setDailyPlan((dr) => {
-      dr.midUpdate1.TaskList = taskList;
+      dr.plan.TaskList = taskList;
 
       return dr;
     });
-    setDailyPlan((dr) => {
-      dr.midUpdate1.screenShots = screenShots;
-
-      return dr;
-    });
-  }, [midUpdate, setDailyPlan, taskList, screenShots]);
+  }, [planUpdate, setDailyPlan, taskList]);
 
   return (
     <YStack
       css={{ border: "1px solid $accents7", borderRadius: "$sm", p: "$4" }}
     >
-      {Object.entries(midUpdate).map(
+      {Object.entries(planUpdate).map(
         ([key, value]) =>
           typeof value === "string" &&
           (key !== "additionalInfo" ? (
@@ -72,11 +60,9 @@ const MidUpdate = () => {
           ))
       )}
       <Text>Tasks</Text>
-      <TaskList taskListAtom={taskList1Atom} />
-      <Text>ScreenShots</Text>
-      <ScreenShots screenShotsAtom={screenShots1Atom} />
+      <TaskList taskListAtom={taskList3Atom} />
     </YStack>
   );
 };
 
-export default MidUpdate;
+export default Plan;
